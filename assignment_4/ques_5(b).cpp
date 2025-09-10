@@ -24,3 +24,4 @@ public:
 
     bool empty() { return q.empty(); }
 };
+
