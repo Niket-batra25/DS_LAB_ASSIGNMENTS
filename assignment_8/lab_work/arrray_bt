@@ -1,0 +1,125 @@
+#include <iostream>
+using namespace std;
+
+class array_bt {
+public:
+    int* tree;
+    int capacity;
+
+    array_bt(int capacity) {
+        this->capacity = capacity;
+        tree = new int[capacity];
+
+        for (int i = 0; i < capacity; i++) {
+            tree[i] = 0;
+        }
+    }
+
+    void setroot(int key) {
+        if (tree[0] != 0) {
+            cout << "ROOT ALREADY EXISTS.....\n";
+        } else {
+            tree[0] = key;
+        }
+    }
+
+    void setleft(int key, int parentindex) {
+        int childindex = (2 * parentindex) + 1;
+
+        if (parentindex >= capacity || tree[parentindex] == 0) {
+            cout << "Parent not found at index " << parentindex << endl;
+        } else if (childindex >= capacity) {
+            cout << "Array overflow\n";
+        } else {
+            tree[childindex] = key;
+        }
+    }
+
+    void setright(int key, int parentindex) {
+        int childindex = (2 * parentindex) + 2;
+
+        if (parentindex >= capacity || tree[parentindex] == 0) {
+            cout << "Parent not found at index " << parentindex << endl;
+        } else if (childindex >= capacity) {
+            cout << "Array overflow\n";
+        } else {
+            tree[childindex] = key;
+        }
+    }
+
+    void printarray() {
+        for (int i = 0; i < capacity; i++) {
+            if (tree[i] != 0) cout << tree[i] << " ";
+            else cout << "_ ";
+        }
+       cout << endl;
+    }
+    
+    void deletenode(int idx){
+        if(idx>=capacity || idx==0){
+            cout<<"invalid index"<<endl;
+            return;
+        }
+        tree[idx]=-1;
+        deletenode(2*idx+1);
+        deletenode(2*idx+2);
+    }
+};
+
+int main() {
+    int size, choice = 0, pindex, val;
+
+    cout << "Enter max size of tree: ";
+    cin >> size;
+
+    array_bt bt(size);
+
+    do {
+        cout << "\n1. Add root node\n";
+        cout << "2. Add left node\n";
+        cout << "3. Add right node\n";
+        cout << "4. Display tree\n";
+        cout << "5. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value of root: ";
+                cin >> val;
+                bt.setroot(val);
+                break;
+
+            case 2:
+                cout << "Enter parent index: ";
+                cin >> pindex;
+                cout << "Enter value of left child: ";
+                cin >> val;
+                bt.setleft(val, pindex);
+                break;
+
+            case 3:
+                cout << "Enter parent index: ";
+                cin >> pindex;
+                cout << "Enter value of right child: ";
+                cin >> val;
+                bt.setright(val, pindex);
+                break;  // FIXED
+
+            case 4:
+                bt.printarray();
+                break;
+
+            case 5:
+                cout << "Exiting program\n";
+                break;
+
+            default:
+                cout << "Invalid choice!!\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
